@@ -6,16 +6,16 @@ module BootstrapForm
 
     attr_reader :layout, :label_col, :control_col, :has_error, :inline_errors, :label_errors, :acts_like_form_tag
 
-    FIELD_HELPERS = %w{color_field date_field datetime_field datetime_local_field
-      email_field month_field number_field password_field phone_field
-      range_field search_field telephone_field text_area text_field time_field
-      url_field week_field}
+    FIELD_HELPERS = %w{
+      email_field number_field password_field phone_field
+      range_field search_field telephone_field text_area text_field
+      url_field}
 
     DATE_SELECT_HELPERS = %w{date_select time_select datetime_select}
 
     delegate :content_tag, :capture, :concat, to: :@template
 
-    def initialize(object_name, object, template, options)
+    def initialize(object_name, object, template, options, block = nil)
       @layout = options[:layout]
       @label_col = options[:label_col] || default_label_col
       @control_col = options[:control_col] || default_control_col
@@ -193,8 +193,8 @@ module BootstrapForm
       fields_options[:layout] ||= options[:layout]
       fields_options[:label_col] = fields_options[:label_col].present? ? "#{fields_options[:label_col]} #{label_class}" : options[:label_col]
       fields_options[:control_col] ||= options[:control_col]
-      fields_options[:inline_errors] ||= options[:inline_errors]
-      fields_options[:label_errors] ||= options[:label_errors]
+      fields_options[:inline_errors] = options[:inline_errors] if fields_options[:inline_errors].nil?
+      fields_options[:label_errors] = options[:label_errors] if fields_options[:inline_errors].nil?
       fields_for_without_bootstrap(record_name, record_object, fields_options, &block)
     end
 

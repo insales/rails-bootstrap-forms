@@ -26,6 +26,11 @@ module BootstrapForm
       end
     end
 
+    def bootstrap_fields_for(record_name, record_object = nil, options = {}, &block)
+      options.reverse_merge!({builder: BootstrapForm::FormBuilder})
+      fields_for(record_name, record_object, options, &block)
+    end
+
     def bootstrap_form_tag(options = {}, &block)
       options[:acts_like_form_tag] = true
 
