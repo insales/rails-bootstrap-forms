@@ -28,7 +28,9 @@ module BootstrapForm
 
     def bootstrap_fields_for(record_name, record_object = nil, options = {}, &block)
       options.reverse_merge!({builder: BootstrapForm::FormBuilder})
-      fields_for(record_name, record_object, options, &block)
+      temporarily_disable_field_error_proc do
+        fields_for(record_name, record_object, options, &block)
+      end
     end
 
     def bootstrap_form_tag(options = {}, &block)
