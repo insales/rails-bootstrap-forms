@@ -38,7 +38,7 @@ module BootstrapForm
             if hide_attribute_name
               object.errors[name].join(", ")
             else
-              object.errors.full_messages_for(name).join(", ")
+              (object.errors.get(name) || []).map { |message| object.errors.full_message(name, message) }.join(", ")
             end
           end
         end
