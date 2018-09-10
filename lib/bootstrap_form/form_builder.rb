@@ -315,18 +315,15 @@ module BootstrapForm
     end
 
     def generate_help(name, help_text)
+      return if help_text == false
       # TODO: split them, do not join. (?)
-      help_text = object.errors[name].join(", ") if has_error?(name) && inline_errors
-      return if help_text === false
-
-      messages = [help_text]
-      i18n_text = get_help_text_by_i18n_key(name)
-      messages << i18n_text if i18n_text
-
+      errors = has_error?(name) && inline_errors ? object.errors[name].join(", ") : []
+      help_text ||= get_help_text_by_i18n_key(name)
+      messages = errors << help_text
       messages
-        .find_all(&:present?)
-        .map { |m| content_tag(:span, m, class: 'help-block') }
-        .reduce(&:+)
+          .find_all(&:present?)
+          .map { |m| content_tag(:span, m, class: 'help-block') }
+          .reduce(&:+)
     end
 
     def generate_icon(icon)
